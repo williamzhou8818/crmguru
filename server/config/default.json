@@ -1,0 +1,6 @@
+{
+    "mysqlEndPoint": "aws-crm-dbs.cuufggcnihgr.ap-southeast-2.rds.amazonaws.com",
+    "jwtSecret": "secret"
+}
+
+

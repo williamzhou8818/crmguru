@@ -1,11 +1,11 @@
 import React from 'react';
-// import Login from './components/login/login';
+import Login from './components/login/login';
 import Register from './components/register/register';
 
 function App() {
   return (
     <div className="App">
-          <Register />
+          <Login />
     </div>
   );
 }
