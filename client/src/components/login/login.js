@@ -1,5 +1,9 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox  } from 'antd';
+import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message  } from 'antd';
+import { connect } from  'react-redux';
+import { loginUser } from '../../actions/authAction'; 
 import './login.scss';
 
 const layout = {
@@ -17,9 +21,19 @@ const layout = {
     },
   };
   
-const Login = () => {
+const Login = ({auth:{isAuthenticated, error}, history, loginUser}) => {
     const onFinish = (values) => {
-        console.log('Success:', values);
+
+          loginUser({
+              email:Object.values(values)[0],
+              password: Object.values(values)[1]
+          })
+        // console.log('Success:', values);
+        // console.log('Success:', Object.values(values)[0]);
+        // console.log('Success:', Object.values(values)[1]);
+
+
+
     };
     
     const onFinishFailed = (errorInfo) => {
@@ -29,7 +43,7 @@ const Login = () => {
 
     return (
        <div className="login-wrap" >
-      
+        {isAuthenticated && history.push('/') }
        <Form
           className="login-wrap__form"
             {...layout}
@@ -42,7 +56,10 @@ const Login = () => {
         >
           <div className="login_logo">
              {/* <img src="" alt="logo"/> */}
-             <h3>CRM GURU</h3>
+             {
+                error && message.error(error, 5)
+              }
+             <h3>CRM Guru Login</h3>
           </div>
         <Form.Item
             label="E-mail"
@@ -88,4 +105,14 @@ const Login = () => {
     )
 };
 
-export default Login;
+
+
+Login.propTypes = {
+  auth: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+export default connect(mapStateToProps, {loginUser})(withRouter(Login));

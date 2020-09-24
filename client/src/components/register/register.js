@@ -1,6 +1,11 @@
 import React from 'react';
-import {Form,Input,Tooltip,Select,Checkbox,Button} from 'antd';
+import PropTypes from 'prop-types';
+import {Form,Input,Tooltip,Select,Checkbox,Button, message} from 'antd';
+import { withRouter } from "react-router-dom";
+
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { registerUser, loadUser } from '../../actions/authAction';
 
 import './register.scss';
 
@@ -38,11 +43,38 @@ const tailFormItemLayout = {
   },
 };
 
-const RegistrationForm = () => {
+const RegistrationForm = ({auth:{error, isAuthenticated},history, registerUser, loadUser}) => {
+
+
+
+  // const [user, setUser] = useState({
+  //     username: '',
+  //     email:'',
+  //     password:'',
+  //     confirm:'',
+  //     phone: '',
+  //     prefix:'',
+  //     agreement: true
+  // })
+
+  // const {username, email, password, password2, phone, agreement} = user;
+
   const [form] = Form.useForm();
 
+ 
+
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', Object.values(values)  ) ;
+  
+      registerUser({
+        email: Object.values(values)[0],
+        password: Object.values(values)[1],
+        username:Object.values(values)[3],
+        phone: Object.values(values)[5],
+        agreement: Object.values(values)[6]
+      });
+
+   
   };
 
   const prefixSelector = (
@@ -61,6 +93,12 @@ const RegistrationForm = () => {
   
   return (
     <div className="register-wrap">
+      {isAuthenticated  && 
+         history.push('/')
+
+        //  need to fix issu user not loading
+      
+     }
     <Form
       {...formItemLayout}
       form={form}
@@ -68,7 +106,10 @@ const RegistrationForm = () => {
       onFinish={onFinish}
       scrollToFirstError
     >
-        <h3 className="register__h3">CRM Guru Registration </h3>
+      {
+         error && message.error(error, 5)
+      }
+      <h3 className="register__h3">CRM Guru Registration </h3>
       <Form.Item
         name="email"
         label="E-mail"
@@ -191,5 +232,17 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
 
+
+RegistrationForm.propTypes = {
+  auth: PropTypes.object.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  loadUser: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, {registerUser, loadUser})(withRouter(RegistrationForm));
+ 
