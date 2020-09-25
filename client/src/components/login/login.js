@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+// import PropTypes from 'prop-types';
 import { withRouter } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message  } from 'antd';
 import { connect } from  'react-redux';
@@ -20,30 +20,38 @@ const layout = {
       span: 16,
     },
   };
+
+
+
+  //{auth:{isAuthenticated, error}, history, loginUser}
   
-const Login = ({auth:{isAuthenticated, error}, history, loginUser}) => {
-    const onFinish = (values) => {
+class Login extends Component {
 
-          loginUser({
-              email:Object.values(values)[0],
-              password: Object.values(values)[1]
-          })
-        // console.log('Success:', values);
-        // console.log('Success:', Object.values(values)[0]);
-        // console.log('Success:', Object.values(values)[1]);
+  constructor(props) {
+    super(props);
+    this.props = props;
+    console.log(this.props)
+  }
+onFinish = (values) => {
+  loginUser({
+      email:Object.values(values)[0],
+      password: Object.values(values)[1]
+  })
+// console.log('Success:', values);
+// console.log('Success:', Object.values(values)[0]);
+// console.log('Success:', Object.values(values)[1]);
 
+};
 
-
-    };
-    
-    const onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
+onFinishFailed = (errorInfo) => {
+console.log('Failed:', errorInfo);
+};
+  render() {
 
 
     return (
        <div className="login-wrap" >
-        {isAuthenticated && history.push('/') }
+        {this.props.isAuthenticated && this.props.history.push('/') }
        <Form
           className="login-wrap__form"
             {...layout}
@@ -51,13 +59,13 @@ const Login = ({auth:{isAuthenticated, error}, history, loginUser}) => {
             initialValues={{
                 remember: true,
             }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={this.onFinish}
+            onFinishFailed={this.onFinishFailed}
         >
           <div className="login_logo">
              {/* <img src="" alt="logo"/> */}
              {
-                error && message.error(error, 5)
+                this.props.error && message.error(this.props.error, 5)
               }
              <h3>CRM Guru Login</h3>
           </div>
@@ -103,14 +111,15 @@ const Login = ({auth:{isAuthenticated, error}, history, loginUser}) => {
         </Form>
       </div>
     )
+  }
 };
 
 
 
-Login.propTypes = {
-  auth: PropTypes.object.isRequired,
-  loginUser: PropTypes.func.isRequired
-}
+// Login.propTypes = {
+//   auth: PropTypes.object.isRequired,
+//   loginUser: PropTypes.func.isRequired
+// }
 
 const mapStateToProps = state => ({
   auth: state.auth

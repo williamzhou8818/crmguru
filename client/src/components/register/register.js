@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {Form,Input,Tooltip,Select,Checkbox,Button, message} from 'antd';
 import { withRouter } from "react-router-dom";
 
@@ -234,11 +234,11 @@ const RegistrationForm = ({auth:{error, isAuthenticated},history, registerUser, 
 
 
 
-RegistrationForm.propTypes = {
-  auth: PropTypes.object.isRequired,
-  registerUser: PropTypes.func.isRequired,
-  loadUser: PropTypes.func.isRequired
-}
+// RegistrationForm.propTypes = {
+//   auth: PropTypes.object.isRequired,
+//   registerUser: PropTypes.func.isRequired,
+//   loadUser: PropTypes.func.isRequired
+// }
 
 const mapStateToProps = state => ({
   auth: state.auth

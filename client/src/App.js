@@ -1,15 +1,18 @@
-import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
+import React, {Component}from 'react';
+// import PropTypes from 'prop-types';
+import {Route, Switch} from 'react-router-dom';
+
 
 import setAuthToken from './utils/setAuthToken';
+import {connect} from 'react-redux';
 
+//PrivateRoute
+import PrivateRoute from './components/routing/PrivateRoute';
 
 
 /** Golb Style */
 import './App.css';
-import { Layout, Breadcrumb} from 'antd';
+import { Layout,  Breadcrumb} from 'antd';
 
 // component and routes
 import Login from './components/login/Login';
@@ -18,57 +21,77 @@ import Dashboard from './components/dashboard/Dashboard';
 import Contacts from './components/contacts/Contacts';
 
 //Layout - header - sideNavbar
-import Header from './layout/header';
+import SiteHeader from './layout/header';
 import SideNavbar from './layout/sideNavbar';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
+const { Content} = Layout;
 
-function App() {
-  const { Content} = Layout;
-
+class  App extends Component  {
+  //{auth: {isAuthenticated}}
+  constructor(props) {
+    super(props);
+    this.props = props;
+    console.log(this.props)
+}
+  render() {
   return (
-    <Provider store={store}>
-    <Router>
+
+  
     <div className="App">
-      <Layout>
-        <Header/>
+     
+     <Layout>
+
+        <SiteHeader />
+
           <Layout>
-          <SideNavbar/>
-       
-                <Layout style={{ padding: '0 24px 24px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <Content
-                      className="site-layout-background"
-                      style={{
-                        padding: 24,
-                        margin: 0,
-                        minHeight: 280,
-                      }}
-                    >
-                      <Switch>
-                        <Route exact path='/' component={Dashboard}/>
-                        <Route exact path='/register' component={Register}/>
-                        <Route exact path='/login' component={Login}/>
-                        <Route exact path='/contacts' component={Contacts}/>
+            {this.props.isAuthenticated &&  <SideNavbar/> }
+         
 
-                      </Switch>
+        <Layout style={{ padding: '0 24px 24px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                <Breadcrumb.Item>List</Breadcrumb.Item>
+                <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            <Content
+              className="site-layout-background"
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+              }}
+            >
+             
+             <Switch>
+                <PrivateRoute exact path='/' component={Dashboard} />
+                <Route exact path='/contacts' component={Contacts} />
+                <Route  exact path='/login' component={Login} />
+                <Route exact path='/register' component={Register} />
+              </Switch>
 
-                    </Content>
-                </Layout>
+            </Content>
+        </Layout>
 
-           </Layout>
-       </Layout>
-      
+   </Layout>
+           
+</Layout>
+      <>
+
+</>
+
      </div>
-    </Router>
-    </Provider>
   );
+       }
 }
 
-export default App;
+// App.propTypes = {
+//   auth: PropTypes.object,
+// }
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps)(App);

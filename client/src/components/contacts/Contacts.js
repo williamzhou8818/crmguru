@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { getContacts, addContact } from '../../actions/contactAction';
 // import ContactsForm from './../forms/ContactsForm';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {Modal, Table,  Space, Button, Row, Col,  Form, Input} from 'antd';
 import { UserAddOutlined, UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 
@@ -117,7 +117,7 @@ const Contacts = ({contact: {contacts}, getContacts, addContact}) => {
         // setModalText('The modal will be closed after two seconds');
         setConfirmLoading(true);
         setTimeout(() => {
-          // console.log(contact);
+          console.log(contact);
           addContact(contact);
           setVisible(false);
           setConfirmLoading(false);
@@ -203,11 +203,11 @@ const Contacts = ({contact: {contacts}, getContacts, addContact}) => {
     )
 }
 
-Contacts.propTypes = {
-    contact: PropTypes.object.isRequired,
-    getContacts: PropTypes.func.isRequired,
-    addContact: PropTypes.func.isRequired,
-}
+// Contacts.propTypes = {
+//     contact: PropTypes.object,
+//     getContacts: PropTypes.func.isRequired,
+//     addContact: PropTypes.func.isRequired,
+// }
 
 const mapStateToProps = state => ({
     contact: state.contact

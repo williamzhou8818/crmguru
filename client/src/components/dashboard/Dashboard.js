@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loadUser } from '../../actions/authAction';
 
@@ -19,12 +19,12 @@ const Dashboard = ({auth:{user},loadUser}) => {
     )
 }
 
-Dashboard.propTypes = {
-    auth: PropTypes.object.isRequired,
-    loadUser: PropTypes.func.isRequired
-  }
+// Dashboard.propTypes = {
+//     auth: PropTypes.object.isRequired,
+//     loadUser: PropTypes.func.isRequired
+//   }
 const mapStateToProps = state => ({
     auth: state.auth
-  })
+})
   
 export default connect(mapStateToProps, {loadUser})(Dashboard);

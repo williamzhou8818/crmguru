@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-
+import { withRouter } from 'react-router-dom'; 
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import SideNavbar from './sideNavbar';
 
 
 /** Main */
-const SiteHeader = ({auth:{isAuthenticated, user},loadUser, logoutUser}) => {
+const SiteHeader = ({auth:{isAuthenticated, user},loadUser, logoutUser, history}) => {
     const { SubMenu } = Menu;
     const { Header} = Layout;
 
@@ -24,13 +24,14 @@ const SiteHeader = ({auth:{isAuthenticated, user},loadUser, logoutUser}) => {
 
     const onLogout = () => {
         logoutUser();
+        history.push('/login');
     }
 
     const authLinks = (
         <Menu.ItemGroup title="">
                 <Menu.Item key="2"><Link to="/profile">Profile</Link></Menu.Item>
 
-                 <Menu.Item key="2"><Link  onClick={onLogout}>Logout</Link></Menu.Item>
+                 <Menu.Item key="2"><Link to="/login" onClick={onLogout}>Logout</Link></Menu.Item>
 
          </Menu.ItemGroup>
 
@@ -64,7 +65,7 @@ const SiteHeader = ({auth:{isAuthenticated, user},loadUser, logoutUser}) => {
 SideNavbar.propTypes = {
     auth: PropTypes.object.isRequired,
     loadUser: PropTypes.func.isRequired,
-    logoutUser: PropTypes.func.isRequired,
+    logoutUser: PropTypes.func,
   }
 
 const mapStateToProps = state => ({
@@ -72,4 +73,4 @@ const mapStateToProps = state => ({
   })
   
 
-export default connect(mapStateToProps, {loadUser, logoutUser})(SiteHeader);
+export default connect(mapStateToProps, {loadUser, logoutUser})(withRouter(SiteHeader));

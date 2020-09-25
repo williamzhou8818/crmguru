@@ -58,6 +58,7 @@ router.post('/', [auth, [
             name: name,
             frist_name: frist_name,
             last_name: last_name,
+            full_name: frist_name + ' ' + last_name,
             phone: phone,
             email: email,
             uuid: req.user.id

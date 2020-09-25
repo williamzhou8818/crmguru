@@ -17,6 +17,10 @@ const  Contact = sequelize.define('contact', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    full_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     phone: {
         type: Sequelize.STRING,
         allowNull: false

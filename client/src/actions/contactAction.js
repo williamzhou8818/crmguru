@@ -5,19 +5,18 @@ import {
     ADD_CONTACTS
 } from './types';
 
+import axios from 'axios';
 
 export const getContacts = () => async dispatch => { 
 
     try {
         setLoading();
         //Fectch data from api
-        const res = await fetch('https://swapi.dev/api/people');
-        const data = await res.json();
-        // const res = await fetch('https://swapi.dev/api/people');
+        const res = await axios.get('/api/v1/contacts');
        
         dispatch({
             type: GET_CONTACTS,
-            payload: data
+            payload: res.data
         })
     } catch (err) {
         dispatch({
@@ -29,20 +28,19 @@ export const getContacts = () => async dispatch => {
 }
 
 // ADD NEW CONTACT
-export const addContact = (contact) => async dispatch => {
+export const addContact = (contactData) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+  
     try {
         setLoading();
-        // const res = await fetch('/contacts', {
-        //     method: 'POST',
-        //     body: JSON.stringify(contact),
-        //     header: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-        //const data = await res.json();
+        const res = await axios.post('/api/v1/contacts/', contactData, config);
         dispatch({
             type: ADD_CONTACTS,
-            payload: contact
+            payload: res.data
         });
 
     } catch(err) {
